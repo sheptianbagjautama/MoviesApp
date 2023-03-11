@@ -1,14 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { getPopularMovies } from './services/services';
 
-const getPopularMovies = async () => {
-  const resp = await axios.get('https://api.themoviedb.org/3/movie/popular?api_key=1a2b7b7ef669300f9fca253333e4b01b');
-  //NOTED : Agar terlihat sama seperti response di postman
-  //  console.log(JSON.stringify(resp.data.results[0], null, 2));
-  
-  return resp.data.results;
-};
 
 const App = () => {
   const [movie, setMovie] = useState('');
