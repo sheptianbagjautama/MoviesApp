@@ -49,7 +49,7 @@ const Home = () => {
         />
       </View>
       <View style={styles.carousel}>
-        <List title="My List Component Title" content={popularMovies}></List>
+        <List title="Popular Movies" content={popularMovies}></List>
       </View>
     </React.Fragment>
   );
