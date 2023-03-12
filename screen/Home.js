@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {getPopularMovies, getUpcomingMovies} from '../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -7,7 +7,8 @@ const dimentions = Dimensions.get('screen');
 
 const Home = () => {
   console.log(dimentions);
-  const [moviesImages, setMoviesImages] = useState('');
+  const [moviesImages, setMoviesImages] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([{}]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -27,22 +28,33 @@ const Home = () => {
       });
 
     getPopularMovies()
-      .then(movies => {})
+      .then(movies => {
+        setPopularMovies(movies);
+      })
       .catch(err => {
         setError(err);
       });
   }, []);
 
   return (
-    <View style={styles.sliderContainer}>
-      <SliderBox
-        images={moviesImages}
-        autplay={true}
-        circleLoop={true}
-        sliderBoxHeight={dimentions.height / 1.5}
-        dotStyle={styles.sliderStyle}
-      />
-    </View>
+    <React.Fragment>
+      <View style={styles.sliderContainer}>
+        <SliderBox
+          images={moviesImages}
+          autplay={true}
+          circleLoop={true}
+          sliderBoxHeight={dimentions.height / 1.5}
+          dotStyle={styles.sliderStyle}
+        />
+      </View>
+      <View style={styles.carousel}>
+        <FlatList
+          data={popularMovies}
+          horizontal={true}
+          renderItem={({item}) => <Text>{item.title}</Text>}
+        />
+      </View>
+    </React.Fragment>
   );
 };
 
@@ -54,6 +66,11 @@ const styles = StyleSheet.create({
   },
   sliderStyle: {
     height: 0,
+  },
+  carousel: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
