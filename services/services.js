@@ -21,8 +21,21 @@ export const getUpcomingMovies = async () => {
 //Get Popular TV
 export const getPopularTv = async () => {
   const resp = await axios.get(`${apiUrl}tv/popular?${apiKey}`);
-  //NOTED : Agar terlihat sama seperti response di postman
-  //  console.log(JSON.stringify(resp.data.results[0], null, 2));
+  return resp.data.results;
+};
 
+//Get Family Movies
+export const getFamilyMovies = async () => {
+  const resp = await axios.get(
+    `${apiUrl}discover/movie?${apiKey}&with_genres=10751`,
+  );
+  return resp.data.results;
+};
+
+//Get Documentary Movies
+export const getDocumentaryMovies = async () => {
+  const resp = await axios.get(
+    `${apiUrl}discover/movie?${apiKey}&with_genres=99`,
+  );
   return resp.data.results;
 };

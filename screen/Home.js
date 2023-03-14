@@ -7,7 +7,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import {getPopularMovies, getUpcomingMovies} from '../services/services';
+import {
+  getDocumentaryMovies,
+  getFamilyMovies,
+  getPopularMovies,
+  getPopularTv,
+  getUpcomingMovies,
+} from '../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 import List from '../components/List';
 
@@ -17,6 +23,9 @@ const Home = () => {
   console.log(dimentions);
   const [moviesImages, setMoviesImages] = useState([]);
   const [popularMovies, setPopularMovies] = useState([{}]);
+  const [popularTv, setPopularTv] = useState([{}]);
+  const [familyMovies, setFamilyMovies] = useState([{}]);
+  const [documentaryMovies, setDocumentaryMovies] = useState([{}]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -41,6 +50,30 @@ const Home = () => {
       .catch(err => {
         setError(err);
       });
+
+    getPopularTv()
+      .then(movies => {
+        setPopularTv(movies);
+      })
+      .catch(err => {
+        setError(err);
+      });
+
+    getFamilyMovies()
+      .then(movies => {
+        setFamilyMovies(movies);
+      })
+      .catch(err => {
+        setError(err);
+      });
+
+    getDocumentaryMovies()
+      .then(movies => {
+        setDocumentaryMovies(movies);
+      })
+      .catch(err => {
+        setError(err);
+      });
   }, []);
 
   return (
@@ -56,7 +89,16 @@ const Home = () => {
           />
         </View>
         <View style={styles.carousel}>
-          <List title="Popular Movies" content={popularMovies}></List>
+          <List title="Popular Movies" content={popularMovies} />
+        </View>
+        <View style={styles.carousel}>
+          <List title="Popular TV Shows" content={popularTv} />
+        </View>
+        <View style={styles.carousel}>
+          <List title="Family Movies" content={familyMovies} />
+        </View>
+        <View style={styles.carousel}>
+          <List title="Documentary Movies" content={documentaryMovies} />
         </View>
       </ScrollView>
     </React.Fragment>
