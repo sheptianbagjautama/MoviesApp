@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {getPopularMovies, getUpcomingMovies} from '../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 import List from '../components/List';
@@ -21,7 +28,6 @@ const Home = () => {
             `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
           );
         });
-        console.log(moviesImagesArray);
         setMoviesImages(moviesImagesArray);
       })
       .catch(err => {
@@ -39,18 +45,20 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      <View style={styles.sliderContainer}>
-        <SliderBox
-          images={moviesImages}
-          autplay={true}
-          circleLoop={true}
-          sliderBoxHeight={dimentions.height / 1.5}
-          dotStyle={styles.sliderStyle}
-        />
-      </View>
-      <View style={styles.carousel}>
-        <List title="Popular Movies" content={popularMovies}></List>
-      </View>
+      <ScrollView>
+        <View style={styles.sliderContainer}>
+          <SliderBox
+            images={moviesImages}
+            autplay={true}
+            circleLoop={true}
+            sliderBoxHeight={dimentions.height / 1.5}
+            dotStyle={styles.sliderStyle}
+          />
+        </View>
+        <View style={styles.carousel}>
+          <List title="Popular Movies" content={popularMovies}></List>
+        </View>
+      </ScrollView>
     </React.Fragment>
   );
 };
