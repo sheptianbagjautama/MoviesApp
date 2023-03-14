@@ -17,6 +17,7 @@ import {
 } from '../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 import List from '../components/List';
+import Error from '../components/Error';
 
 const dimentions = Dimensions.get('screen');
 
@@ -63,8 +64,8 @@ const Home = () => {
           setDocumentaryMovies(documentaryMoviesData);
         },
       )
-      .catch(err => {
-        setError(err);
+      .catch(() => {
+        setError(true);
       })
       .finally(() => {
         setLoaded(true);
@@ -73,7 +74,7 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      {loaded && (
+      {loaded && !error && (
         <ScrollView>
           {moviesImages && (
             <View style={styles.sliderContainer}>
@@ -110,6 +111,7 @@ const Home = () => {
         </ScrollView>
       )}
       {!loaded && <ActivityIndicator size={'large'} />}
+      {error && <Error />}
     </React.Fragment>
   );
 };
