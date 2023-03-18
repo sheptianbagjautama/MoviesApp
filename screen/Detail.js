@@ -56,7 +56,13 @@ const Detail = ({route, navigation}) => {
                 })}
               </View>
             )}
-            <StarRating maxStart={5} rating={movieDetail.vote_average} />
+            <StarRating
+              maxStart={5}
+              starSize={30}
+              rating={movieDetail.vote_average / 2}
+              disabled={true}
+              fullStarColor={'gold'}
+            />
           </View>
         </ScrollView>
       )}
@@ -84,6 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     marginTop: 20,
+    marginBottom: 20,
   },
   genre: {
     marginRight: 10,
