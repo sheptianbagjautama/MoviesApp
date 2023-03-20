@@ -18,10 +18,14 @@ const Search = ({navigation}) => {
   const [error, setError] = useState(false);
 
   const onSubmit = query => {
-    searchMovieTv(query, 'movie').then(data => {
-      setSearchResults(data);
-      console.log(searchResults);
-    });
+    Promise.all([searchMovieTv(query, 'movie'), searchMovieTv(query, 'tv')])
+      .then(([movies, tv]) => {
+        const data = [...movies, ...tv];
+        setSearchResults(data);
+      })
+      .catch(() => {
+        setError(true);
+      });
   };
   return (
     <React.Fragment>
