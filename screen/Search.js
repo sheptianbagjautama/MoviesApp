@@ -1,18 +1,27 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Card from '../components/Card';
+import {searchMovieTv} from '../services/services';
 
 const Search = ({navigation}) => {
   const [text, onChangeText] = useState();
+  const [searchResults, setSearchResults] = useState();
+  const [error, setError] = useState(false);
 
   const onSubmit = query => {
-    console.log(query);
+    searchMovieTv(query, 'movie').then(data => {
+      setSearchResults(data);
+      console.log(searchResults);
+    });
   };
   return (
     <React.Fragment>
@@ -32,6 +41,38 @@ const Search = ({navigation}) => {
             }}>
             <Icon name={'search-outline'} size={30} />
           </TouchableOpacity>
+        </View>
+
+        <View style={styles.searchItems}>
+          {/* Searched items results */}
+          {searchResults && searchResults.length > 0 && (
+            <FlatList
+              numColumns={3}
+              data={searchResults}
+              renderItem={({item}) => (
+                <Card navigation={navigation} item={item} />
+              )}
+              keyExtractor={item => item.id}
+            />
+          )}
+
+          {/* When searched but no results */}
+          {searchResults && searchResults.length == 0 && (
+            <View style={styles.noResults}>
+              <Text>No results matching your criteria.</Text>
+              <Text>Try different keywords.</Text>
+            </View>
+          )}
+
+          {/* When nothing is searched */}
+          {!searchResults && (
+            <View style={styles.empty}>
+              <Text>Type something to start searching</Text>
+            </View>
+          )}
+
+          {/* Error */}
+          {error && <Error />}
         </View>
       </SafeAreaView>
     </React.Fragment>
@@ -55,6 +96,12 @@ const styles = StyleSheet.create({
     flexBasis: 'auto',
     flexGrow: 1,
     paddingRight: 8,
+  },
+  searchItems: {
+    padding: 5,
+  },
+  noResults: {
+    paddingTop: 20,
   },
 });
 
